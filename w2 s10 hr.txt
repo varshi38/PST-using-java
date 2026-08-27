@@ -1,0 +1,49 @@
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+        int maxUnique = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            // Add current element
+            map.put(arr[i], map.containsKey(arr[i])
+                    ? map.get(arr[i]) + 1
+                    : 1);
+
+            // Remove element outside the window
+            if (i >= k) {
+                int old = arr[i - k];
+
+                if (map.get(old) == 1) {
+                    map.remove(old);
+                } else {
+                    map.put(old, map.get(old) - 1);
+                }
+            }
+
+            // Window has exactly k elements
+            if (i >= k - 1) {
+                maxUnique = Math.max(maxUnique, map.size());
+            }
+        }
+
+        System.out.println(maxUnique);
+
+        sc.close();
+    }
+}
